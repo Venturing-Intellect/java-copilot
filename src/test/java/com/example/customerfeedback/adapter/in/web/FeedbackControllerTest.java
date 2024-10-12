@@ -25,6 +25,7 @@ public class FeedbackControllerTest {
     @Test
     void submitFeedback_validRequest_returnsOk() throws Exception {
         SubmitFeedbackCommand command = new SubmitFeedbackCommand();
+        command.setName("John Doe");
         command.setEmail("test@example.com");
         command.setFeedback("Great service!");
 
@@ -32,7 +33,7 @@ public class FeedbackControllerTest {
 
         mockMvc.perform(post("/api/feedback")
                 .contentType("application/json")
-                .content("{\"email\":\"test@example.com\",\"feedback\":\"Great service!\"}"))
+                .content("{\"name\":\"John Doe\",\"email\":\"test@example.com\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -40,7 +41,7 @@ public class FeedbackControllerTest {
     void submitFeedback_invalidEmail_returnsBadRequest() throws Exception {
         mockMvc.perform(post("/api/feedback")
                 .contentType("application/json")
-                .content("{\"email\":\"invalid-email\",\"feedback\":\"Great service!\"}"))
+                .content("{\"name\":\"John Doe\",\"email\":\"invalid-email\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -55,10 +56,10 @@ public class FeedbackControllerTest {
             "x@example.com", // one-letter local-part
             "example-indeed@strange-example.com",
             "example@s.example", // see the List of Internet top-level domains
-
     })
     void submitFeedback_validEmails_returnsOk(String email) throws Exception {
         SubmitFeedbackCommand command = new SubmitFeedbackCommand();
+        command.setName("John Doe");
         command.setEmail(email);
         command.setFeedback("Great service!");
 
@@ -66,7 +67,7 @@ public class FeedbackControllerTest {
 
         mockMvc.perform(post("/api/feedback")
                         .contentType("application/json")
-                        .content("{\"email\":\"" + email + "\",\"feedback\":\"Great service!\"}"))
+                        .content("{\"name\":\"John Doe\",\"email\":\"" + email + "\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -87,8 +88,7 @@ public class FeedbackControllerTest {
     void submitFeedback_invalidEmails_returnsBadRequest(String email) throws Exception {
         mockMvc.perform(post("/api/feedback")
                         .contentType("application/json")
-                        .content("{\"email\":\"" + email + "\",\"feedback\":\"Great service!\"}"))
+                        .content("{\"name\":\"John Doe\",\"email\":\"" + email + "\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isBadRequest());
     }
-
 }

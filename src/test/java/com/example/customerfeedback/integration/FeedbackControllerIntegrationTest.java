@@ -36,11 +36,12 @@ public class FeedbackControllerIntegrationTest {
     void submitFeedback_validRequest_persistsToDatabase() throws Exception {
         mockMvc.perform(post("/api/feedback")
                 .contentType("application/json")
-                .content("{\"email\":\"test@example.com\",\"feedback\":\"Great service!\"}"))
+                .content("{\"name\":\"John Doe\",\"email\":\"test@example.com\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isOk());
 
         // Verify the data in the database
         FeedbackEntity feedbackEntity = feedbackRepository.findAll().get(0);
+        assertThat(feedbackEntity.getName()).isEqualTo("John Doe");
         assertThat(feedbackEntity.getEmail()).isEqualTo("test@example.com");
         assertThat(feedbackEntity.getFeedback()).isEqualTo("Great service!");
     }
@@ -49,7 +50,7 @@ public class FeedbackControllerIntegrationTest {
     void submitFeedback_invalidEmail_returnsBadRequest() throws Exception {
         mockMvc.perform(post("/api/feedback")
                 .contentType("application/json")
-                .content("{\"email\":\"invalid-email\",\"feedback\":\"Great service!\"}"))
+                .content("{\"name\":\"John Doe\",\"email\":\"invalid-email\",\"feedback\":\"Great service!\"}"))
                 .andExpect(status().isBadRequest());
 
         // Verify that no data is persisted in the database

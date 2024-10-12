@@ -17,6 +17,7 @@ public class FeedbackService implements SubmitFeedbackUseCase {
     @Override
     public void submitFeedback(SubmitFeedbackCommand command) {
         FeedbackEntity feedbackEntity = new FeedbackEntity();
+        feedbackEntity.setName(command.getName());
         feedbackEntity.setEmail(command.getEmail());
         feedbackEntity.setFeedback(command.getFeedback());
         feedbackRepository.save(feedbackEntity);
